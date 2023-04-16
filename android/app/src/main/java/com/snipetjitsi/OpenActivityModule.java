@@ -1,5 +1,6 @@
 package com.snipetjitsi;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -8,12 +9,15 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
-//import org.jitsi.meet.sdk.JitsiMeetActivity;
-//import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
+import org.jitsi.meet.sdk.JitsiMeetActivity;
+import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 
 public class OpenActivityModule extends ReactContextBaseJavaModule {
+    Context context;
+
     public OpenActivityModule (ReactApplicationContext reactContext){
         super(reactContext);
+        this.context = reactContext.getApplicationContext(); // This is where you get the context
     }
 
     @NonNull
@@ -23,21 +27,18 @@ public class OpenActivityModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void open(){
-        Log.d("test Module", "Open click");
-        /*String conferenceName = "https://meet.jit.si/teste";
-        if (conferenceName.length() > 0) {
+    public void open(String conferenceURL){
+        Log.d("test Module", conferenceURL);
+        if (conferenceURL.length() > 0) {
             JitsiMeetConferenceOptions options
                     = new JitsiMeetConferenceOptions.Builder()
                     .setFeatureFlag("notifications.enabled", false)
                     .setFeatureFlag("filmstrip.enabled", false)
                     .setFeatureFlag("welcomepage.enabled", false)
-                    .setRoom(conferenceName)
+                    .setRoom(conferenceURL)
                     .build();
-            JitsiMeetActivity.launch(this, options);
+            JitsiMeetActivity.launch(this.context, options);
         }
-
-         */
     }
 }
 
