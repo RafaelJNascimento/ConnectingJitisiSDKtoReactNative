@@ -5,32 +5,33 @@ import {
     TextInput,
     TouchableOpacity,
     StyleSheet,
-    NativeModules,
 } from 'react-native';
 
-const App = () => {
+import JitsiMeetModule, { JitsiMeetView } from './modulo';
 
-    const { OpenActivity } = NativeModules;
+const App = () => {
 
     const [conferenceUrl, onChangeconferenceUrl] = useState('');
     const [conferenceName, onChangeConferenceName] = useState('');
 
     const onPressOpen = () => {
         let url = '';
-        if(conferenceName.length !== 0) {
-            url = `https://meet.jit.si/${conferenceName}`;
-        } else {
-            url = conferenceUrl;
-        }
-        if(url.length > 0) {
-            OpenActivity.open(url);
-        }
+
+        setTimeout(() => {
+            const url = 'https://meet.jit.si/exemple';
+            const userInfo = {
+                displayName: 'User',
+                email: 'user@example.com',
+                avatar: 'https:/gravatar.com/avatar/abc123',
+            };
+            JitsiMeetModule.activityMode({ userInfo, serverUrl: url });
+        }, 1000);
     }
 
     return (
         <View style={styles.container}>
             <TextInput
-                style={[styles.input, {marginBottom: 20}]}
+                style={[styles.input, { marginBottom: 20 }]}
                 placeholder='conference url'
                 onChangeText={onChangeconferenceUrl}
                 value={conferenceUrl}
@@ -48,6 +49,11 @@ const App = () => {
                     open conference
                 </Text>
             </TouchableOpacity>
+            <JitsiMeetView
+                onConferenceWillJoin={() => { }}
+                onConferenceTerminated={() => { }}
+                onConferenceJoined={() => { }}
+            />
         </View>
     );
 }
